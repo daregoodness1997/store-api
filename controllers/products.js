@@ -81,7 +81,7 @@ const getProduct = async (req, res) => {
   const {
     params: { id: productId },
   } = req;
-  const product = await Product.find({ productId });
+  const product = await Product.find({ _id: productId });
   res.status(200).json({ product });
 };
 const createProduct = async (req, res) => {
@@ -93,7 +93,7 @@ const deleteProduct = async (req, res) => {
     params: { id: productId },
   } = req;
 
-  const product = await Product.findByIdAndDelete({ productId });
+  const product = await Product.findByIdAndDelete({ _id: productId });
   res.status(200).json({ msg: `Deleted a product of id ${productId}` });
 };
 const updateProduct = async (req, res) => {
@@ -111,10 +111,14 @@ const updateProduct = async (req, res) => {
   ) {
     console.log('Fields should not be empty');
   }
-  const product = await Product.findByIdAndUpdate({ productId }, req.body, {
-    new: true,
-    runValidators: true,
-  });
+  const product = await Product.findByIdAndUpdate(
+    { _id: productId },
+    req.body,
+    {
+      new: true,
+      runValidators: true,
+    }
+  );
   res
     .status(200)
     .json({ product, msg: `Updated a product of id ${productId}` });
